@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<!--head部分-->
+<head>
+	<title>shiro权限管理系统</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+</head>
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <!--头-->
+        <div th:replace="fragments/head :: header"></div> 
+        
+        <div class="layui-body">
+            <div class="layui-container">
+                <div class="layui-row">
+                    <div class="layui-col-xs9">
+                        &nbsp;
+                        <h1 style="padding-top:50px;line-height:2.0;"><shiro:principal property="user_code"></shiro:principal>，欢迎您登录
+                        <a href="http://blog.51cto.com/wyait"><span style="font-weight: bold;font-size:28px;">后台管理系统</span></a></h1>
+                        <p><font style="font-size: 18px;">博客链接：</font><a href="https://github.com/chenjl123/springboot.shiro"><span style="font-weight: bold;font-size:20px;color:blue">https://github.com/chenjl123/springboot.shiro</span></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--底部-->
+        <div th:replace="fragments/footer :: footer"></div>
+    </div>
+</body>
+<script type="text/javascript" src="/js/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/layui/layui.js"></script>
+</html>

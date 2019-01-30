@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.zm.dao.UserRoleMapper" >
+  
+  <!-- 删除用户角色 -->
+  <delete id="delete" parameterType="UserRole" >
+    delete from user_role where user_id = #{user_id}
+  </delete>
+
+  <!-- 批量添加角色 -->  
+  <insert id="insert" parameterType="java.util.List" >
+    insert into user_role (user_id, role_id) values  
+    <foreach collection="list" item="item" index="index" separator =",">
+    	(#{item.user_id}, #{item.role_id})
+    </foreach>
+  </insert>
+</mapper>

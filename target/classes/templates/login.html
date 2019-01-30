@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<!--head部分-->
+<head>
+	<title>shiro权限管理系统</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+</head>
+<body style="width: 100%;height:auto;background: url('/images/bk.gif') no-repeat;background-size: 100%;">
+    <div class="layui-container" style="height: 100%">
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 6%">
+            <legend style="margin-left: 40%"><span style="font-weight: bold;font-size:22px;">shiro权限管理系统</span></legend>
+        </fieldset>
+
+        <div class="layui-row">
+            <div class="layui-col-xs3">
+                <div class="grid-demo grid-demo-bg1">
+                    &nbsp;
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="grid-demo">
+                    <form id="useLogin" class="layui-form" action="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input id="user_code" name="user_code" value="admin" lay-verify="required" autocomplete="off" class="layui-input" type="tel"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">密&nbsp;&nbsp;码</label>
+                            <div class="layui-input-inline">
+                                <input id="password" name="password" value="1" lay-verify="required" autocomplete="off" class="layui-input" type="password"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">验证码</label>
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <input id="code" name="code" autocomplete="off" class="layui-input" type="text"/>
+                                </div>
+                                <div class="layui-input-inline" style="width: 120px;">
+                                    <canvas id="canvas" width="120" height="38"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="margin-top: -20px;">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-inline">
+                                <input type="checkbox" name="rememberMe" id="rememberMe" lay-skin="primary"  title="记住我"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                                <button id="loginBtn" class="layui-btn " lay-submit="" lay-filter="login">登录</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="/js/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script type="text/javascript" src="/js/vtcodeUtil.js"></script>
+<script type="text/javascript">
+/**
+ * 登录
+ */
+var vtPicCode = drawPic();
+layui.use(['form' ,'layer'], function() {
+     var form = layui.form;
+     var layer = layui.layer;
+     form.on("submit(login)",function () {
+         login();
+         return false;
+     });
+     
+ 	//自定义验证规则
+     form.verify({
+     	vtcode: function(value, item){
+ 			if(!value){
+ 				return "请输入验证码";
+ 			}else{
+ 				if(vtPicCode.toLowerCase() != value.toLowerCase()){
+ 					return "验证码不正确"
+ 				}
+ 			}
+ 	   	}
+     });
+     
+	function login(){
+		var user = {"user_code": $("#user_code").val(), "password": $("#password").val()};
+	   	$.ajax({ 
+	 	   url: "/user/login", 
+	 	   data: JSON.stringify(user),
+	 	   type: 'post',
+	 	   contentType:"application/json",
+	 	   dataType : "json", 
+	 	   success: function(data){
+		        if(data.code=="200"){
+		            layer.msg("登录成功");
+		            window.location.href="/home";
+		        }else{
+		        	vtPicCode = drawPic();
+		            $("#code").val("");
+		            layer.alert(data.msg,function(){
+		                layer.closeAll();//关闭所有弹框
+		            });
+		        }
+	 	   }
+	    });
+	}
+})
+</script>
+</html>

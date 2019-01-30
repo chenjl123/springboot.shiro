@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.zm.dao.UserMapper">
+	<!-- 通过用户编码获取用户 -->
+	<select id="findUserByCode" parameterType="string" resultType="User">
+		select id,user_name,mobile,email,password,create_time,is_del,user_code,is_lock from user where user_code = #{user_code} and is_del = '0'
+	</select>
+	
+	<!-- 获取用户列表 -->
+	<select id="getUsers" parameterType="com.cn.zm.entity.UserSearchVo" resultType="com.cn.zm.entity.UserRoleVo">
+		select id, user_name, mobile, email, create_time,is_del,user_code from user where is_del = '0'
+	      <if test="user_code != null" >
+	        and user_code = #{user_code}
+	      </if>
+	      <if test="mobile != null" >
+	         and mobile = #{mobile}
+	      </if>
+		order by create_time desc
+	</select>
+	
+	<!-- 修改用户 -->
+	<update id="update" parameterType="User">
+		update user set user_name = #{user_name}, email = #{email}, mobile = #{mobile} where id = #{id}
+	</update>
+	
+	<!-- 新增用户 -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="User">
+		insert into user (id,user_name,mobile,email,password,create_time,is_del,user_code,is_lock) values
+		(#{id}, #{user_name}, #{mobile}, #{email}, #{password}, #{create_time}, #{is_del}, #{user_code}, #{is_lock})
+	</insert>
+
+	<!-- 删除用户 -->	
+	<delete id="delete" parameterType="int">
+		update user set is_del = '1' where id = #{id}
+	</delete>
+</mapper>

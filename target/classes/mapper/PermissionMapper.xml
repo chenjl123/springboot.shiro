@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.zm.dao.PermissionMapper" >
+    <select id="getUserPerms" resultType="Permission">
+    select
+    p.id, p.name,p.pid, p.zindex, p.istype, p.code, p.icon, p.page
+    from permission p
+    LEFT JOIN role_permission rp ON rp.permit_id=p.id
+    LEFT JOIN role r ON r.id=rp.role_id
+    LEFT JOIN user_role ur ON ur.role_id=r.id
+    WHERE ur.user_id=#{userId}
+    GROUP BY p.id
+    order by p.zindex
+  </select>
+  
+  <!-- 获取所有资源 -->
+  <select id="findAll" resultType="Permission">
+    select id, name, pid, zindex, istype, descpt, code, icon, page, create_time from permission order by zindex
+  </select>
+  
+  <!-- 根据角色获取资源 -->
+    <select id="findPermsByRole" resultType="Permission">
+    select id, name,pid, zindex, istype, code, icon, page from permission p
+    left join role_permission rp on rp.permit_id = p.id
+    where rp.role_id = #{roleId}
+  </select>
+</mapper>

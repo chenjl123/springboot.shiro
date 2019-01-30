@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<!--head部分-->
+<head>
+	<title>shiro权限管理系统</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+     <link rel="stylesheet" href="/js/ztree/css/zTreeStyle/zTreeStyle.css"></link>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头-->
+    <div th:replace="fragments/head :: header"></div>
+    <div class="layui-body" style="margin: 1%">
+      <button class="layui-btn layui-btn-normal" id="addRole">添加角色</button>
+      <hr class="layui-bg-black"/>
+      <table id="roleList" lay-filter="roleTable"></table>
+    </div>
+
+    <!--底部-->
+    <div th:replace="fragments/footer :: footer"></div>
+</div>
+<!-- 弹框 -->
+ <div id="roleDiv" style="display: none">
+     <form id="roleForm" class="layui-form" action="=" method="post">
+       <input type="hidden" id="id" name="id"/>
+       <div class="layui-form-item">
+           <div class="layui-inline">
+               <label class="layui-form-label">角色名称：</label>
+               <div class="layui-input-inline">
+                   <input type="text" id="role_name" name="role_name" lay-verify="required" autocomplete="off" class="layui-input"/>
+               </div>
+           </div>
+       </div>
+       <div class="layui-form-item">
+           <div class="layui-inline">
+               <label class="layui-form-label">角色编号：</label>
+               <div class="layui-input-inline">
+                   <input type="text" id="code" name="code" lay-verify="required" autocomplete="off" class="layui-input"/>
+               </div>
+           </div>
+       </div>
+
+       <div class="layui-form-item">
+           <label class="layui-form-label">角色描述：</label>
+           <div class="layui-input-block">
+               <input type="text" id="descpt" name="descpt" lay-verify="" placeholder="" autocomplete="off" class="layui-input"/>
+           </div>
+       </div>
+
+       <div class="layui-form-item">
+           <div class="layui-input-block">
+               <button class="layui-btn" lay-submit="" lay-filter="roleSubmit">立即提交</button>
+               <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+           </div>
+       </div>
+   </form>
+</div>
+
+  <div id="setPerm" class="layer_self_wrap" style="width:500px;display:none;">
+      <form id="permForm" class="layui-form layui-form-pane" method="post" action="" style="margin-top: 20px;min-height:400px;">
+		  <input type="hidden" id="rid"/>
+          <div class="layui-form-item">
+            <label class="layui-form-label">权限：</label>
+            <div class="layui-input-block">
+                <ul id="treeDemo" class="ztree"></ul>
+            </div>
+          </div>
+          <div class="layui-form-item">
+              <div class="layui-input-block" style="float: right;">
+                  <button class="layui-btn"  lay-submit="" lay-filter="permSubmit">提交</button>
+              </div>
+          </div>
+      </form>
+  </div>
+</body>
+<script type="text/html" id="optBar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+	<a class="layui-btn layui-btn-xs" lay-event="perm">设置权限</a>
+</script>
+<script src="/js/ztree/jquery.ztree.all.js"></script>
+<script src="/js/auth/roleList.js"></script>
+</html>

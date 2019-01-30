@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.zm.dao.RoleMapper" >
+  <!-- 通过用户id获取角色 -->
+  <select id="getRoleByUserId" resultType="Role">
+    select r.id, r.role_name, r.code from user_role ur
+    left join role r on r.id = ur.role_id
+    where ur.user_id = #{userId}
+  </select>
+  
+  <select id="findList" resultType="Role">
+  	select * from role order by create_time desc 
+  </select>
+  
+  <!-- 修改 -->
+	<update id="update" parameterType="Role">
+		update role set code = #{code}, role_name = #{role_name}, descpt = #{descpt} where id = #{id}
+	</update>
+	
+	<!-- 新增 -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Role">
+		insert into role (id,role_name,descpt,code,create_time) values
+		(#{id}, #{role_name}, #{descpt}, #{code}, #{create_time})
+	</insert>
+
+	<!-- 删除 -->	
+	<delete id="delete" parameterType="int">
+		delete from role where id = #{id}
+	</delete>
+</mapper>
